@@ -41,11 +41,11 @@ import elemental.json.impl.JreJsonObject;
 @CssImport("./lumo-pivot.css")
 public class PivotTable extends Composite<Div> {
 
-    private String dataJson;
-    private String optionsJson;
-    private PivotMode pivotMode;
-    private Random rand = new Random();
-    private String id;
+    private final String dataJson;
+    private final String optionsJson;
+    private final PivotMode pivotMode;
+    private final Random rand = new Random();
+    private final String id;
 
     public enum PivotMode {
         INTERACTIVE, NONINTERACTIVE
@@ -55,6 +55,7 @@ public class PivotTable extends Composite<Div> {
         private List<String> cols;
         private List<String> rows;
         private List<String> vals;
+        private String aggregatorName;
 
         public PivotOptions() {
         }
@@ -71,6 +72,10 @@ public class PivotTable extends Composite<Div> {
             this.vals = Arrays.asList(vals);
         }
 
+        public void setAggregatorName(String aggregatorName) {
+            this.aggregatorName = aggregatorName;
+        }
+
         public JsonObject toJson() {
             JreJsonFactory factory = new JreJsonFactory();
             JsonObject object = new JreJsonObject(factory);
@@ -82,6 +87,9 @@ public class PivotTable extends Composite<Div> {
             }
             if (vals != null) {
                 object.put("vals", JsonSerializer.toJson(vals));
+            }
+            if (aggregatorName != null && !aggregatorName.isEmpty()) {
+                object.put("aggregatorName", aggregatorName);
             }
             return object;
         }
